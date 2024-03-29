@@ -12,8 +12,8 @@ int main()
         number /= 10;
     }
     if (temp == sum)
-        printf("Pallindrome");
+        printf("The Entered number is a Pallindrome");
     else
-        printf("Not a pallindrome");
+        printf("The Entered number is not a pallindrome");
     return 0;
 }
