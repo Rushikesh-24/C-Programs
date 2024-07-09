@@ -25,7 +25,9 @@ int main()
         printf("2. Display\n");
         printf("3. Count\n");
         printf("4. Search\n");
-        printf("5. Exit\n");
+        printf("5. Enter element at the beginning\n");
+        printf("6. Enter element at the end\n");
+        printf("7. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -46,11 +48,21 @@ int main()
             searching(start, item);
             break;
         case 5:
+            printf("Enter the element to be entered at the start");
+            scanf("%d", &item);
+            start = addToBeg(start, item);
+            break;
+        case 6:
+            printf("Enter the element to be entered at the end");
+            scanf("%d", &item);
+            start = addToEnd(start, item);
+            break;
+        case 7:
             exit(0);
         default:
             printf("Invalid input\n");
         }
-    } while (choice != 5);
+    } while (choice != 7);
 
     return 0;
 }
