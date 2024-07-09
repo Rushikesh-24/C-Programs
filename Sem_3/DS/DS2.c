@@ -13,56 +13,63 @@ struct node *addToEnd(struct node *start, int data);
 void display(struct node *start);
 void counting(struct node *start);
 void searching(struct node *start, int item);
+struct node *intersection(struct node *start1, struct node *start2);
+struct node *unionAtEnd(struct node *start1, struct node *start2);
+struct node *unionAtBeg(struct node *start1, struct node *start2);
+struct node *subtraction(struct node *start1, struct node *start2);
+int isPresent(struct node *start, int data);
 
 int main()
 {
-    struct node *start = NULL;
+    struct node *start1 = NULL,*start2 = NULL;
     int choice, item;
 
     do
     {
-        printf("\n1. Create\n");
-        printf("2. Display\n");
-        printf("3. Count\n");
-        printf("4. Search\n");
-        printf("5. Enter element at the beginning\n");
-        printf("6. Enter element at the end\n");
-        printf("7. Exit\n");
+        printf("\n1. Create List 1\n");
+        printf("2. Create List 2\n");
+        printf("3. Display List 1\n");
+        printf("4. Display List 2\n");
+        printf("5. Intersection\n");
+        printf("6. Union at End\n");
+        printf("7. Union at Beginning\n");
+        printf("8. Subtraction\n");
+        printf("9. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
         switch (choice)
         {
         case 1:
-            start = Create(start);
+            start1 = Create(start1);
             break;
         case 2:
-            display(start);
+            start2 = Create(start2);
             break;
         case 3:
-            counting(start);
+            display(start1);
             break;
         case 4:
-            printf("Enter element to be searched: ");
-            scanf("%d", &item);
-            searching(start, item);
+            display(start2);
             break;
         case 5:
-            printf("Enter the element to be entered at the start");
-            scanf("%d", &item);
-            start = addToBeg(start, item);
+            display(intersection(start1, start2));
             break;
         case 6:
-            printf("Enter the element to be entered at the end");
-            scanf("%d", &item);
-            start = addToEnd(start, item);
+            display(unionAtEnd(start1, start2));
             break;
         case 7:
+            display(unionAtBeg(start1, start2));
+            break;
+        case 8:
+            display(subtraction(start1, start2));
+            break;
+        case 9:
             exit(0);
         default:
             printf("Invalid input\n");
         }
-    } while (choice != 7);
+    } while (choice != 9);
 
     return 0;
 }
@@ -176,4 +183,110 @@ void searching(struct node *start, int item)
         pos++;
     }
     printf("Item %d not found\n", item);
+}
+
+struct node *intersection(struct node *start1, struct node *start2)
+{
+    struct node *result = NULL, *p1 = start1, *p2;
+    while (p1 != NULL)
+    {
+        p2 = start2;
+        while (p2 != NULL)
+        {
+            if (p1->info == p2->info)
+            {
+                result = addToEnd(result, p1->info);
+                break;
+            }
+            p2 = p2->link;
+        }
+        p1 = p1->link;
+    }
+    return result;
+}
+
+struct node *unionAtEnd(struct node *start1, struct node *start2)
+{
+    struct node *result = NULL, *p = start1;
+    while (p != NULL)
+    {
+        if (!isPresent(result, p->info))
+        {
+            result = addToEnd(result, p->info);
+        }
+        p = p->link;
+    }
+    p = start2;
+    while (p != NULL)
+    {
+        if (!isPresent(result, p->info))
+        {
+            result = addToEnd(result, p->info);
+        }
+        p = p->link;
+    }
+    return result;
+}
+
+struct node *unionAtBeg(struct node *start1, struct node *start2)
+{
+    struct node *result = NULL, *p = start2;
+    while (p != NULL)
+    {
+        if (!isPresent(result, p->info))
+        {
+            result = addToBeg(result, p->info);
+        }
+        p = p->link;
+    }
+    p = start1;
+    while (p != NULL)
+    {
+        if (!isPresent(result, p->info))
+        {
+            result = addToBeg(result, p->info);
+        }
+        p = p->link;
+    }
+    return result;
+}
+
+struct node *subtraction(struct node *start1, struct node *start2)
+{
+    struct node *result = NULL, *p1 = start1, *p2;
+    int found;
+    while (p1 != NULL)
+    {
+        p2 = start2;
+        found = 0;
+        while (p2 != NULL)
+        {
+            if (p1->info == p2->info)
+            {
+                found = 1;
+                break;
+            }
+            p2 = p2->link;
+        }
+        if (!found)
+        {
+            result = addToEnd(result, p1->info);
+        }
+        p1 = p1->link;
+    }
+    return result;
+}
+
+int isPresent(struct node *start, int data)
+{
+    struct node *p = start;
+    while (p != NULL)
+    {
+        if (p->info == data)
+        {
+            return 1;
+        }
+        p = p->link;
+    }
+    return 0;
 }
