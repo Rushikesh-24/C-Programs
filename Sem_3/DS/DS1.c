@@ -92,7 +92,7 @@ int main()
 float grade(int marks)
 {
     if (marks > 107)
-        return 10.0;
+        return 10.0;//O
     if (marks > 99)
         return 9.5; // A+
     if (marks > 94)
