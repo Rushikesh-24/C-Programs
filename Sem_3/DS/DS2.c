@@ -41,7 +41,7 @@ int main()
         printf("10. Searching\n");
         printf("11. Counting the number of elements\n");
         printf("12.Reverse a list\n");
-        printf("12.Delete a element\n");
+        printf("13.Delete a element\n");
         printf("14. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
