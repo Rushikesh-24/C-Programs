@@ -21,6 +21,8 @@ struct node *subtraction(struct node *start1, struct node *start2);
 int isPresent(struct node *start, int data);
 struct node *reverse(struct node *start);
 struct node *delete(struct node *start,int data);
+struct node *sortList(struct node *start);
+struct node *unionLists(struct node *start1, struct node *start2);
 
 int main()
 {
@@ -34,15 +36,14 @@ int main()
         printf("3. Add at beggining of list\n");
         printf("4. Add at end of list\n");
         printf("5. Intersection\n");
-        printf("6. Union on list 1\n");
-        printf("7. Union on list 2\n");
-        printf("8. Subtraction\n");
-        printf("9. Add at a position in list \n");
-        printf("10. Searching\n");
-        printf("11. Counting the number of elements\n");
-        printf("12.Reverse a list\n");
-        printf("13.Delete a element\n");
-        printf("14. Exit\n");
+        printf("6. Union\n");
+        printf("7. Subtraction\n");
+        printf("8. Add at a position in list \n");
+        printf("9. Searching\n");
+        printf("10. Counting the number of elements\n");
+        printf("11.Reverse a list\n");
+        printf("12.Delete a element\n");
+        printf("13. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -111,18 +112,15 @@ int main()
             }
             break;
         case 5:
-            display(intersection(start1, start2));
+            display(sortList(intersection(start1, start2)));
             break;
         case 6:
-            display(unionAtEnd(start1, start2));
+            display(sortList(unionLists(start1, start2)));
             break;
         case 7:
-            display(unionAtBeg(start1, start2));
-            break;
-        case 8:
             display(subtraction(start1, start2));
             break;
-        case 9:
+        case 8:
             printf("Enter 1 to enter elements at in the linked list 1\n");
             printf("Enter 2 to enter elements at in the linked list 2\n");
             scanf("%d", &pos);
@@ -141,7 +139,7 @@ int main()
                 display(start2);
             }
             break;
-        case 10:
+        case 9:
             printf("Enter 1 to search elements at in the linked list 1\n");
             printf("Enter 2 to search elements at in the linked list 2\n");
             scanf("%d", &pos);
@@ -159,7 +157,7 @@ int main()
             }
 
             break;
-        case 11:
+        case 10:
             printf("Enter 1 to count elements in the linked list 1\n");
             printf("Enter 2 to count elements in the linked list 2\n");
             scanf("%d", &pos);
@@ -173,7 +171,7 @@ int main()
                 counting(start2);
             }
             break;
-        case 12:
+        case 11:
             printf("Enter 1 to count elements in the linked list 1\n");
             printf("Enter 2 to count elements in the linked list 2\n");
             scanf("%d", &pos);
@@ -187,7 +185,7 @@ int main()
                 display(start2);
             }
             break;
-        case 13:
+        case 12:
             printf("Enter 1 to delete elements in the linked list 1\n");
             printf("Enter 2 to delete elements in the linked list 2\n");
             scanf("%d", &pos);
@@ -205,13 +203,13 @@ int main()
                 display(start2);
             }
             break;
-        case 14:
+        case 13:
             exit(0);
         default:
             printf("Invalid input\n");
             break;
         }
-    } while (choice != 14);
+    } while (choice != 13);
 
     return 0;
 }
@@ -230,7 +228,7 @@ struct node *Create(struct node *start)
     start = addToBeg(start, data);
     for (i = 2; i <= n; i++)
     {
-        printf("Enter the next data to be entered: ");
+        printf("Enter the data to be entered: ");
         scanf("%d", &data);
         start = addToEnd(start, data);
     }
@@ -502,4 +500,45 @@ struct node *delete(struct node *start,int data){
     }
     printf("Element not found\n");
     return start;
+}
+
+struct node *sortList(struct node *start)
+{
+    struct node *p, *q;
+    int temp;
+
+    for (p = start; p != NULL; p = p->link)
+    {
+        for (q = p->link; q != NULL; q = q->link)
+        {
+            if (p->info > q->info)
+            {
+                temp = p->info;
+                p->info = q->info;
+                q->info = temp;
+            }
+        }
+    }
+    return start;
+}
+
+struct node *unionLists(struct node *start1, struct node *start2)
+{
+    struct node *result = NULL;
+    struct node *t1 = start1;
+
+    while (t1 != NULL)
+    {
+        result = addToEnd(result, t1->info);
+        t1 = t1->link;
+    }
+
+    t1 = start2;
+    while (t1 != NULL)
+    {
+        if (!isPresent(start1, t1->info))
+            result = addToEnd(result, t1->info);
+        t1 = t1->link;
+    }
+    return sortList(result);
 }
