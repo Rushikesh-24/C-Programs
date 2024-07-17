@@ -194,7 +194,7 @@ long int evaluatePostfix() {
 
 int main() {
   printf("Enter infix expression: ");
-  fgets(infix, MAX, stdin);
+  scanf("%s", infix);
   infixToPostfix();
   printf("\nThe postfix expression is: %s\n", postfix);
   printf("%ld", evaluatePostfix());
