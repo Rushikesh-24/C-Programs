@@ -197,6 +197,6 @@ int main() {
   scanf("%s", infix);
   infixToPostfix();
   printf("\nThe postfix expression is: %s\n", postfix);
-  printf("%ld", evaluatePostfix());
+  printf("After evaluating %ld", evaluatePostfix());
   return 0;
 }
