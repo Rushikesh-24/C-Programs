@@ -23,7 +23,7 @@ int isEmpty() {
 
 void enqueue(int data) {
     if (isFull()) {
-        printf("Queue is full. Cannot enqueue element.\n");
+        printf("Queue Overflow.\n");
         return;
     } else {
         if (front == -1)
@@ -36,7 +36,7 @@ void enqueue(int data) {
 
 void dequeue() {
     if (isEmpty()) {
-        printf("Queue is empty. Cannot dequeue element.\n");
+        printf("Queue Underflow.\n");
         return;
     } else {
         int data = queue[front];
@@ -50,7 +50,7 @@ void dequeue() {
 
 void display() {
     if (isEmpty()) {
-        printf("Queue is empty.\n");
+        printf("Queue Underflow\n");
         return;
     } else {
         printf("Elements in the queue are: ");
@@ -64,7 +64,7 @@ void display() {
 }
 int peek() {
     if (isEmpty()) {
-        printf("Queue is empty. Cannot peek element.\n");
+        printf("Queue Underflow\n");
         exit(1);
     } else {
         return queue[front];
