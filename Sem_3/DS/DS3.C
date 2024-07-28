@@ -15,7 +15,6 @@ int isFull() {
   } else {
     return 0;
   }
-  // return top == MAX - 1;
 }
 int isEmpty() {
   if (top == -1) {
@@ -60,6 +59,24 @@ int whitespace(char symbol) {
 int symbol_priority(char ch) {
   switch (ch) {
   case '^':
+    return 3;
+  case '*':
+  case '/':
+  case '%':
+    return 2;
+  case '+':
+  case '-':
+    return 1;
+  case '(':
+    return 0;
+  default:
+    return -1;
+  }
+}
+
+int instack_priority(char ch) {
+  switch (ch) {
+  case '^':
     return 4;
   case '*':
   case '/':
@@ -68,26 +85,10 @@ int symbol_priority(char ch) {
   case '+':
   case '-':
     return 1;
-  default:
+  case '(':
     return 0;
-  }
-}
-int instack_priority(char ch) {
-  switch (ch) {
-  case '^':
-    return 3;
-  case '*':
-    return 2;
-  case '/':
-    return 2;
-  case '%':
-    return 2;
-  case '+':
-    return 1;
-  case '-':
-    return 1;
   default:
-    return 0;
+    return -1;
   }
 }
 
@@ -99,6 +100,14 @@ void printStep(char symbol, char postfix[], int k) {
   printf("\t\t");
   for (int i = 0; i < k; i++) {
     printf("%c", postfix[i]);
+  }
+  printf("\n");
+}
+
+void printEvaluationStep(long int stack[], int top, char symbol) {
+  printf("Symbol: %c\tStack: ", symbol);
+  for (int i = 0; i <= top; i++) {
+    printf("%ld ", stack[i]);
   }
   printf("\n");
 }
@@ -131,7 +140,7 @@ void infixToPostfix() {
       case '%':
       case '^':
         while (top != -1 &&
-               symbol_priority(peek()) >= symbol_priority(symbol)) {
+               symbol_priority(peek()) >= instack_priority(symbol)) {
           postfix[k++] = pop();
         }
         push(symbol);
@@ -153,17 +162,25 @@ void infixToPostfix() {
 }
 
 long int evaluatePostfix() {
-  long int stack[MAX], top = -1;
+  long int stack[MAX];
+  int top = -1;
   char ch;
   int val1, val2;
+
+  int variableValues[256] = {0};
+  int assigned[256] = {0};
 
   for (int i = 0; i < strlen(postfix); i++) {
     ch = postfix[i];
     if (isalpha(ch)) {
-      int val;
-      printf("Enter the value of %c: ", ch);
-      scanf("%d", &val);
-      stack[++top] = val;
+      if (!assigned[ch]) {
+        int val;
+        printf("Enter the value of %c: ", ch);
+        scanf("%d", &val);
+        variableValues[ch] = val;
+        assigned[ch] = 1;
+      }
+      stack[++top] = variableValues[ch];
     } else {
       val2 = stack[top--];
       val1 = stack[top--];
@@ -188,6 +205,7 @@ long int evaluatePostfix() {
         break;
       }
     }
+    printEvaluationStep(stack, top, ch);
   }
   return stack[top];
 }
@@ -197,6 +215,8 @@ int main() {
   scanf("%s", infix);
   infixToPostfix();
   printf("\nThe postfix expression is: %s\n", postfix);
-  printf("After evaluating %ld", evaluatePostfix());
+  printf("Steps during evaluation:\n");
+  long int result = evaluatePostfix();
+  printf("After evaluating: %ld\n", result);
   return 0;
 }

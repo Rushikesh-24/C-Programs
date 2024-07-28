@@ -88,5 +88,3 @@ int main() {
     }while(n!=5);
   return 0;
 }
-//write a c program to implement infix to postfix
-//write a c program to implememnt various operation of staically operated queue data structure

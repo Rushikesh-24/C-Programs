@@ -23,6 +23,8 @@ struct node *reverse(struct node *start);
 struct node *delete(struct node *start,int data);
 struct node *sortList(struct node *start);
 struct node *unionLists(struct node *start1, struct node *start2);
+struct node *addInSortedOrder(struct node *start, int data);
+struct node *sortedUnion(struct node *start1, struct node *start2);
 
 int main()
 {
@@ -115,7 +117,7 @@ int main()
             display(sortList(intersection(start1, start2)));
             break;
         case 6:
-            display(sortList(unionLists(start1, start2)));
+            display(sortedUnion(start1,start2));
             break;
         case 7:
             display(subtraction(start1, start2));
@@ -188,7 +190,7 @@ int main()
         case 12:
             printf("Enter 1 to delete elements in the linked list 1\n");
             printf("Enter 2 to delete elements in the linked list 2\n");
-            scanf("%d", &pos);
+            scanf("%d", &pos); 
             if (pos == 1)
             {
                 printf("Enter data to be deleted");
@@ -541,4 +543,53 @@ struct node *unionLists(struct node *start1, struct node *start2)
         t1 = t1->link;
     }
     return sortList(result);
+}
+
+struct node *sortedUnion(struct node *start1, struct node *start2)
+{
+    struct node *result = NULL;
+    struct node *p1 = start1;
+    struct node *p2 = start2;
+    while (p1 != NULL)
+    {
+        if (!isPresent(result, p1->info))
+        {
+            result = addInSortedOrder(result, p1->info);
+        }
+        p1 = p1->link;
+    }
+    while (p2 != NULL)
+    {
+        if (!isPresent(result, p2->info))
+        {
+            result = addInSortedOrder(result, p2->info);
+        }
+        p2 = p2->link;
+    }
+
+    return result;
+}
+
+struct node *addInSortedOrder(struct node *start, int data)
+{
+    struct node *temp, *p, *prev;
+    temp = (struct node *)malloc(sizeof(struct node));
+    temp->info = data;
+    temp->link = NULL;
+    if (start == NULL || start->info >= data)
+    {
+        temp->link = start;
+        start = temp;
+        return start;
+    }
+    p = start;
+    while (p != NULL && p->info < data)
+    {
+        prev = p;
+        p = p->link;
+    }
+    temp->link = prev->link;
+    prev->link = temp;
+
+    return start;
 }
