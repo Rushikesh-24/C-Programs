@@ -70,6 +70,34 @@ int peek() {
         return queue[front];
     }
 }
+void displaySteps() {
+    printf("\nQueue status:\n");
+    for (int i = 0; i < MAX_SIZE; i++) {
+        printf("  %2d  ", i);
+    }
+    printf("\n");
+    for (int i = 0; i < MAX_SIZE; i++) {
+        printf(" -----");
+    }
+    printf("\n");
+    int i = front;
+    int count = 0;
+    while (count < MAX_SIZE) {
+        if (!isEmpty() && ((front <= rear && i >= front && i <= rear) || 
+                           (front > rear && (i >= front || i <= rear)))) {
+            printf("| %2d  ", queue[i]);
+        } else {
+            printf("|     ");
+        }
+        i = (i + 1) % MAX_SIZE;
+        count++;
+    }
+    printf("|\n");
+    for (int i = 0; i < MAX_SIZE; i++) {
+        printf(" -----");
+    }
+    printf("\n");
+}
 int main() {
     int choice;
 do {
@@ -87,10 +115,12 @@ do {
                 printf("Enter the element to enqueue: ");
                 scanf("%d", &data);
                 enqueue(data);
+                displaySteps();
                 break;
             }
         case 2:
             dequeue();
+            displaySteps();
             break;
         case 3:
             display();

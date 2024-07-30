@@ -22,7 +22,7 @@ void insert(int item) {
         return;
     }
     if(front == -1){
-        front++;
+        front = 0;
     }
     rear ++;
     array[rear] = item;
@@ -52,6 +52,29 @@ void display(){
         printf("%d ",array[i]);
     }
 }
+void displaySteps() {
+    printf("\nQueue status:\n");
+    for (int i = 0; i < MAX; i++) {
+        printf(" [%d] ", i);
+    }
+    printf("\n");
+    for (int i = 0; i < MAX; i++) {
+        printf(" ---- ");
+    }
+    printf("\n");
+    for (int i = 0; i < MAX; i++) {
+        if (i >= front && i <= rear && !isEmpty()) {
+            printf("|%3d| ", array[i]);
+        } else {
+            printf("|   | ");
+        }
+    }
+    printf("\n");
+    for (int i = 0; i < MAX; i++) {
+        printf(" ---- ");
+    }
+    printf("\n");
+}
 int main() {
     int n;
     int item;
@@ -67,9 +90,11 @@ int main() {
                 printf("Enter the item to be inserted\n");
                 scanf("%d",&item);
                 insert(item);
+                displaySteps();
                 break;
             case 2:
                 printf("Deleted Item :%d\n",delete());
+                displaySteps();
                 break;
             case 3:
                 printf("Peek Item :%d\n",peek());
