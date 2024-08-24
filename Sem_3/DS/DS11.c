@@ -106,7 +106,6 @@ struct TreeNode *construct(struct listNode *preptr, struct listNode *inptr, int 
     return temp;
 }
 
-
 struct TreeNode *queue[50];
 int front =-1;
 int rear =-1;
@@ -173,7 +172,7 @@ void levelOrderArray(struct TreeNode *root) {
       for(int i = 0; i < getHeight(current); i++) {
         printf("   ");
       }
-      printf(" %c ", current->data);
+      printf("%2c ", current->data);
       insert_queue(current->lchild);
       insert_queue(current->rchild);
     } else {
@@ -185,7 +184,15 @@ void levelOrderArray(struct TreeNode *root) {
     i++;
     printed_in_level++;
 
-    if (printed_in_level == nodes_in_level) {
+    if (printed_in_level == nodes_in_level && getHeight(current)>1) {
+      printf("\n");
+      for(int i = 0; i < getHeight(current); i++) {
+        printf("   ");
+      }
+      for(int i = 0; i < nodes_in_level; i++) {
+        printf("/  \\   ");
+      }
+      printf("\n");
       printf("\n");
       level++;
       nodes_in_level = pow(2, level - 1);
@@ -195,7 +202,40 @@ void levelOrderArray(struct TreeNode *root) {
   printf("\n");
 }
 
+struct TreeNode *constructPost(struct listNode *postptr, struct listNode *inptr, int num) {
+  if (num == 0 || postptr == NULL || inptr == NULL) {
+    return NULL;
+  }
 
+  struct listNode *p = postptr;
+  for (int i = 1; i < num; i++) {
+    p = p->link;
+  }
+
+  struct TreeNode *tmp = createNode(p->data);
+
+  if (num == 1) {
+    return tmp;
+  }
+
+  struct listNode *q = inptr;
+  int i = 0;
+  while (q != NULL && q->data != p->data) {
+    i++;
+    q = q->link;
+  }
+
+  tmp->lchild = constructPost(postptr, inptr, i);
+
+  struct listNode *postptrRight = postptr;
+  for (int j = 0; j < i; j++) {
+    postptrRight = postptrRight->link;
+  }
+
+  tmp->rchild = constructPost(postptrRight, q->link, num - i - 1);
+
+  return tmp;
+}
 
 void displayBinaryTree(struct TreeNode *root) {
     if (root == NULL) {
@@ -218,8 +258,6 @@ void displayBinaryTree(struct TreeNode *root) {
     levelOrder(root);
     printf("\n");
 
-     printf("Level Order traversal: \n");
-    levelOrderArray(root);
     printf("\n");
 }
 
@@ -229,9 +267,15 @@ int main() {
 
   int preorder[] = {'A', 'R', 'E', 'W', 'F','T','O','X','U'};
   int inorder[] = {'E', 'R', 'F', 'W', 'A','O','T','U','X'};
+  int postorder[] = {'E', 'F', 'W', 'R', 'O', 'U', 'X', 'T', 'A'};
   struct listNode *preptr = convertToLinkedList(preorder, 9);
   struct listNode *inptr = convertToLinkedList(inorder, 9);
+  struct listNode *postptr = convertToLinkedList(postorder,9);
   struct TreeNode *tree = construct(preptr, inptr, 9);
+  struct TreeNode *root = constructPost(postptr, inptr, 9);
+  displayBinaryTree(root);
+  levelOrderArray(root);
   displayBinaryTree(tree);
+  levelOrderArray(tree);
   return 0;
 }
