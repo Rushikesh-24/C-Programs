@@ -28,7 +28,7 @@ void preorder(struct TreeNode *root) {
   if (root == NULL) {
     return;
   }
-  printf("%c ", root->data);
+  printf("%d ", root->data);
   preorder(root->lchild);
   preorder(root->rchild);
 }
@@ -38,7 +38,7 @@ void inorder(struct TreeNode *root) {
     return;
   }
   inorder(root->lchild);
-  printf("%c ", root->data);
+  printf("%d ", root->data);
   inorder(root->rchild);
 }
 
@@ -48,7 +48,7 @@ void postorder(struct TreeNode *root) {
   }
   postorder(root->lchild);
   postorder(root->rchild);
-  printf("%c ", root->data);
+  printf("%d ", root->data);
 }
 
 struct listNode *convertToLinkedList(int *array, int size) {
@@ -153,6 +153,40 @@ int getHeight(struct TreeNode *root) {
   int leftHeight = getHeight(root->lchild);
   int rightHeight = getHeight(root->rchild);
   return 1 + (leftHeight > rightHeight ? leftHeight : rightHeight);
+}
+
+int getHeightNonRecursive(struct TreeNode *root) {
+  if (root == NULL) {
+    return 0;
+  }
+
+  int height = 0;
+  struct TreeNode *queue[50];
+  int front = -1;
+  int rear = -1;
+
+  insert_queue(root);
+  insert_queue(NULL);
+
+  while (front != rear) {
+    struct TreeNode *current = delete_queue();
+
+    if (current == NULL) {
+      height++;
+      insert_queue(NULL);
+      continue;
+    }
+
+    if (current->lchild != NULL) {
+      insert_queue(current->lchild);
+    }
+
+    if (current->rchild != NULL) {
+      insert_queue(current->rchild);
+    }
+  }
+
+  return height;
 }
 void levelOrderArray(struct TreeNode *root) {
   if (root == NULL) {

@@ -1,96 +1,301 @@
-#include <stdio.h>
-#include <limits.h>
-#include <stdlib.h>
-
-struct node {
-    char info;
-    struct node* link;
+//Binary Search tree
+#include<stdio.h>
+#include<stdlib.h>
+struct Node {
+  int data;
+  struct Node* lchild;
+  struct Node* rchild;
 };
-
-struct node* top = NULL;
-struct node* front = NULL;
-struct node* rear = NULL;
-
-void push(char item) {
-    struct node* tmp;
-    tmp = (struct node *)malloc(sizeof(struct node));
-    if (tmp == NULL) {
-        printf("Stack Overflow\n");
-        return;
-    }
-    tmp->info = item;
-    tmp->link = top;
-    top = tmp;
+struct Node* createNode(int data) {
+  struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+  newNode->data = data;
+  newNode->lchild = NULL;
+  newNode->rchild = NULL;
+  return newNode;
 }
 
-char pop() {
-    if (top == NULL) {
-        printf("Stack Underflow\n");
-        return CHAR_MIN;
-    }
-
-    char item = top->info; // Changed int to char
-    struct node* p = top;
-    top = top->link;
-    free(p);
-    return item;
+struct Node* insert(struct Node* root, int data) {
+  if (root == NULL) {
+    root = createNode(data);
+  }
+  else if (data < root->data) {
+    root->lchild = insert(root->lchild, data);
+  }
+  else if (data > root->data) {
+    root->rchild = insert(root->rchild, data);
+  }
+  return root;
 }
-
-void insert(char data) {
-    struct node* tmp = (struct node*)malloc(sizeof(struct node));
-    if (tmp == NULL) {
-        printf("Queue Overflow\n");
-        return;
-    }
-    tmp->info = data;
-    tmp->link = NULL;
-    if (front == NULL) {
-        front = tmp;
+struct Node* insertNonRecursive(struct Node* root, int data) {
+  struct Node* newNode = createNode(data);
+  if (root == NULL) {
+    root = newNode;
+    return root;
+  }
+  struct Node* current = root;
+  struct Node* parent = NULL;
+  while (current != NULL) {
+    parent = current;
+    if (data < current->data) {
+      current = current->lchild;
     } else {
-        rear->link = tmp;
+      current = current->rchild;
     }
-    rear = tmp;
+  }
+  if (data < parent->data) {
+    parent->lchild = newNode;
+  } else {
+    parent->rchild = newNode;
+  }
+  return root;
 }
 
-char delete() {
-    if (front == NULL) {
-        printf("Queue Underflow\n");
-        return CHAR_MIN;
+void inorderTraversal(struct Node* root) {
+  if (root != NULL) {
+    inorderTraversal(root->lchild);
+    printf("%d ", root->data);
+    inorderTraversal(root->rchild);
+  }
+}
+void inorderTraversalNonRecursive(struct Node* root) {
+  if (root == NULL) {
+    return;
+  }
+  struct Node* stack[100];
+  int top = -1;
+  struct Node* current = root;
+  while (current != NULL || top != -1) {
+    while (current != NULL) {
+      stack[++top] = current;
+      current = current->lchild;
     }
-    struct node* tmp = front;
-    char data = tmp->info;
-    front = front->link;
-    free(tmp);
-    return data;
+    current = stack[top--];
+    printf("%d ", current->data);
+    current = current->rchild;
+  }
 }
 
-int palindrome(const char str[]) {
-    int i = 0;
-    while (str[i] != '\0') {
-        insert(str[i]);
-        push(str[i]);
-        i++;
+struct Node* search(struct Node* root, int key) {
+  if (root == NULL || root->data == key) {
+    return root;
+  }
+  if (key < root->data) {
+    return search(root->lchild, key);
+  }
+  return search(root->rchild, key);
+}
+struct Node* searchNonRecursive(struct Node* root, int key) {
+  while (root != NULL && root->data != key) {
+    if (key < root->data) {
+      root = root->lchild;
+    } else {
+      root = root->rchild;
     }
-
-    while(top!=NULL && front!=NULL){
-        char a=pop();
-        char b=delete();
-        if (a!=b){
-            return 0;   
+  }
+  return root;
+}
+struct Node* delete(struct Node* root, int key) {
+  if (root == NULL) {
+    return root;
+  }
+  if (key < root->data) {
+    root->lchild = delete(root->lchild, key);
+  } else if (key > root->data) {
+    root->rchild = delete(root->rchild, key);
+  } else {
+    if (root->lchild == NULL) {
+      struct Node* temp = root->rchild;
+      free(root);
+      return temp;
+    } else if (root->rchild == NULL) {
+      struct Node* temp = root->lchild;
+      free(root);
+      return temp;
+    }
+    struct Node* successor = root->rchild;
+    while (successor->lchild != NULL) {
+      successor = successor->lchild;
+    }
+    root->data = successor->data;
+    root->rchild = delete(root->rchild, successor->data);
+  }
+  return root;
+}
+struct Node* deleteNonRecursive(struct Node* root, int key) {
+  struct Node* parent = NULL;
+  struct Node* current = root;
+  while (current != NULL && current->data != key) {
+    parent = current;
+    if (key < current->data) {
+      current = current->lchild;
+    } else {
+      current = current->rchild;
+    }
+  }
+  if (current == NULL) {
+    return root;
+  }
+  if (current->lchild == NULL && current->rchild == NULL) {
+    if (current == root) {
+      root = NULL;
+    } else if (current == parent->lchild) {
+      parent->lchild = NULL;
+    } else {
+      parent->rchild = NULL;
+    }
+    free(current);
+  } else if (current->lchild == NULL) {
+    if (current == root) {
+      root = current->rchild;
+    } else if (current == parent->lchild) {
+      parent->lchild = current->rchild;
+    } else {
+      parent->rchild = current->rchild;
+    }
+    free(current);
+  } else if (current->rchild == NULL) {
+    if (current == root) {
+      root = current->lchild;
+    } else if (current == parent->lchild) {
+      parent->lchild = current->lchild;
+    } else {
+      parent->rchild = current->lchild;
+    }
+    free(current);
+  } else {
+    struct Node* successor = current->rchild;
+    struct Node* successorParent = current;
+    while (successor->lchild != NULL) {
+      successorParent = successor;
+      successor = successor->lchild;
+    }
+    current->data = successor->data;
+    if (successor == successorParent->lchild) {
+      successorParent->lchild = successor->rchild;
+    } else {
+      successorParent->rchild = successor->rchild;
+    }
+    free(successor);
+  }
+  return root;
+}
+int main(){
+struct Node* root = NULL;
+    int choice, data;
+    while (1) {
+      printf("1. Insert\n");
+      printf("2. Search\n");
+      printf("3. Inorder Traversal\n");
+      printf("4. Delete\n");
+      printf("5. Exit\n"); 
+      printf("Enter your choice: ");
+      scanf("%d", &choice);
+      switch (choice) {
+      case 1:
+      printf("Enter the number of elements to be inserted: ");
+      int numElements;
+      scanf("%d", &numElements);
+      int insertChoice;
+      printf("Choose insert method:\n");
+      printf("1. Recursive\n");
+      printf("2. Non-Recursive\n");
+      printf("Enter your choice: ");
+      scanf("%d", &insertChoice);
+      switch (insertChoice) {
+      case 1:
+        for (int i = 0; i < numElements; i++) {
+        printf("Enter element %d: ", i + 1);
+        scanf("%d", &data);
+        root = insert(root, data);
         }
-    }
-
-    return 1;
-}
-
-int main() {
-    char str[100];
-    printf("Enter a string: ");
-    scanf("%s", str);
-    if (palindrome(str)) {
-        printf("%s is a palindrome\n", str);
-    } else {
-        printf("%s is not a palindrome\n", str);
+        break;
+      case 2:
+        for (int i = 0; i < numElements; i++) { 
+        printf("Enter element %d: ", i + 1);
+        scanf("%d", &data);
+        root = insertNonRecursive(root, data);
+        }
+        break;
+      default:
+        printf("Invalid choice\n");
+      }
+      break;
+      case 2:
+      printf("Enter the key to be searched: ");
+      scanf("%d", &data);
+      int searchChoice;
+      printf("Choose search method:\n");
+      printf("1. Recursive\n");
+      printf("2. Non-Recursive\n");
+      printf("Enter your choice: ");
+      scanf("%d", &searchChoice);
+      switch (searchChoice) {
+      case 1:
+        if (search(root, data) != NULL) {
+        printf("Key found in the BST\n");
+        } else {
+        printf("Key not found in the BST\n");
+        }
+        break;
+      case 2:
+        if (searchNonRecursive(root, data) != NULL) {
+        printf("Key found in the BST\n");
+        } else {
+        printf("Key not found in the BST\n");
+        }
+        break;
+      default:
+        printf("Invalid choice\n");
+      }
+      break;
+      case 3:
+      printf("Choose traversal method:\n");
+      printf("1. Recursive\n");
+      printf("2. Non-Recursive\n");
+      printf("Enter your choice: ");
+      int traversalChoice;
+      scanf("%d", &traversalChoice);
+      switch (traversalChoice) {
+      case 1:
+        printf("Inorder traversal of the binary search tree: ");
+        inorderTraversal(root);
+        printf("\n");
+        break;
+      case 2:
+        printf("Inorder traversal of the binary search tree: ");
+        inorderTraversalNonRecursive(root);
+        printf("\n");
+        break;
+      default:
+        printf("Invalid choice\n");
+      }
+      break;
+      case 4:
+      printf("Enter the key to be deleted: ");
+      scanf("%d", &data);
+      int deleteChoice;
+      printf("Choose delete method:\n");
+      printf("1. Recursive\n");
+      printf("2. Non-Recursive\n");
+      printf("Enter your choice: ");
+      scanf("%d", &deleteChoice);
+      switch (deleteChoice) {
+      case 1:
+        root = delete(root, data);
+        break;
+      case 2:
+        root = deleteNonRecursive(root, data);
+        break;
+      default:
+        printf("Invalid choice\n");
+      }
+      break;
+      case 5:
+      printf("Exiting the program\n");
+      exit(0);
+      default:
+      printf("Invalid choice\n");
+      }
     }
     return 0;
 }
