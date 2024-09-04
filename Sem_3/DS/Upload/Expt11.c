@@ -29,7 +29,7 @@ char pop() {
         return CHAR_MIN;
     }
 
-    char item = top->info; // Changed int to char
+    char item = top->info;
     struct node* p = top;
     top = top->link;
     free(p);

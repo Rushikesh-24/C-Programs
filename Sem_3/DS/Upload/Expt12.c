@@ -235,6 +235,7 @@ void insertBefore(struct Node* head, int data, int key) {
     
     temp->prev = newNode;
 }
+
 int main() {
     struct Node* head = NULL;
     int choice, data, position,count;
@@ -249,8 +250,12 @@ int main() {
         printf("6. Search element\n");
         printf("7. Count elements\n");
         printf("8. Display\n");
-        printf("9. Exit\n");
+        printf("9. Reverse\n");
+        printf("10. Add after a node\n");
+        printf("11. Add before a node\n");
+        printf("12. Exit\n");
         printf("Enter your choice: ");
+       
         scanf("%d", &choice);
 
         switch (choice) {
@@ -258,11 +263,13 @@ int main() {
                 printf("Enter the data to insert: ");
                 scanf("%d", &data);
                 insertAtEnd(&head, data);
+                display(head);
                 break;
             case 2:
                 printf("Enter the data to insert: ");
                 scanf("%d", &data);
                 insertAtBeginning(&head, data);
+                display(head);
                 break;
             case 3:
                 printf("Enter the data to insert: ");
@@ -270,14 +277,17 @@ int main() {
                 printf("Enter the position: ");
                 scanf("%d", &position);
                 insertAtPosition(&head, data, position);
+                display(head);
                 break;
             case 4:
                 printf("Enter the data to delete: ");
                 scanf("%d", &data);
                 deleteNode(&head, data);
+                display(head);
                 break;
             case 5:
                 reverse(&head);
+                display(head);
                 break;
             case 6:
                 printf("Enter the data to search: ");
@@ -293,6 +303,26 @@ int main() {
                 display(head);
                 break;
             case 9:
+               reverse(&head);
+                display(head);
+                break;
+            case 10:
+                printf("Enter the data to be inserted after : ");
+                scanf("%d", &position);
+                printf("Enter the data to insert: ");
+                scanf("%d", &data);
+                insertAfter(head, data, position);
+                display(head);
+                break;
+            case 11:
+                printf("Enter the data to be inserted before : ");
+                scanf("%d", &position);
+                printf("Enter the data to insert: ");
+                scanf("%d", &data);
+                insertBefore(head, data, position);
+                display(head);
+                break;
+            case 12:
                 exit(0);
             default:
                 printf("Invalid choice! Please try again.\n");
