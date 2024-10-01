@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/_types/_null.h>
 struct node {
   int info;
   struct node *link;
@@ -91,18 +92,19 @@ struct node *difference(struct node *start1, struct node *start2) {
 
     temp1 = temp1->link;
   }
-
   return result;
 }
 void printList(struct node *start) {
   struct node *temp = start;
   while (temp != NULL) {
-    if(temp->link == NULL){
-        printf(" |%d|NULL|\n", temp->info);
-    }
-    else
-        printf(" |%d|%x| -> ", temp->info, temp->link);
+    if (temp->link == NULL) {
+      printf(" |%d|NULL|\n", temp->info);
+    } else
+      printf(" |%d|%x| -> ", temp->info, temp->link);
     temp = temp->link;
+  }
+  if (start == NULL) {
+    printf("List Empty\n");
   }
 }
 int main() {
@@ -112,54 +114,68 @@ int main() {
   start1 = Create(start1);
   printf("List 2\n");
   start2 = Create(start2);
-  do {
-    printf("\n\n1. Union");
-    printf("\n2. Intersection");
-    printf("\n3. Subtraction (L1-L2)");
-    printf("\n4. Subtraction (L2-L1)");
-    printf("\n5. Exit");
-    printf("\n\nEnter your choice: ");
-    scanf("%d", &choice);
-    switch (choice) {
-    case 1:
-      printf("\nList 1: ");
-      printList(start1);
-      printf("\nList 2: ");
-      printList(start2);
-      printf("\nUnion: ");
-      printList(unionList(start1, start2));
-      break;
-    case 2:
-      printf("\nList 1: ");
-      printList(start1);
-      printf("\nList 2: ");
-      printList(start2);
-      printf("\nIntersection: ");
-      printList(intersection(start1, start2));
-      break;
-    case 3:
-      printf("\nList 1: ");
-      printList(start1);
-      printf("\nList 2: ");
-      printList(start2);
-      printf("\nSubtraction (L1-L2): ");
-      printList(difference(start1, start2));
-      break;
-    case 4:
-      printf("\nList 1: ");
-      printList(start1);
-      printf("\nList 2: ");
-      printList(start2);
-      printf("\nSubtraction (L2-L1): ");
-      printList(difference(start2, start1));
-      break;
-    case 5:
-      exit(0);
-      break;
-    default:
-      printf("Invalid choice");
-      break;
-    }
-  } while (choice != 5);
+  printf("\nList 1: ");
+  printList(start1);
+  printf("\nList 2: ");
+  printList(start2);
+  printf("\nUnion: ");
+  printList(unionList(start1, start2));
+  printf("\nIntersection: ");
+  printList(intersection(start1, start2));
+  printf("\nSubtraction (L1-L2): ");
+  printList(difference(start1, start2));
+  printf("\nSubtraction (L2-L1): ");
+  printList(difference(start2, start1));
+
   return 0;
 }
+
+// do {
+//     printf("\n\n1. Union");
+//     printf("\n2. Intersection");
+//     printf("\n3. Subtraction (L1-L2)");
+//     printf("\n4. Subtraction (L2-L1)");
+//     printf("\n5. Exit");
+//     printf("\n\nEnter your choice: ");
+//     scanf("%d", &choice);
+//     switch (choice) {
+//     case 1:
+//       printf("\nList 1: ");
+//       printList(start1);
+//       printf("\nList 2: ");
+//       printList(start2);
+//       printf("\nUnion: ");
+//       printList(unionList(start1, start2));
+//       break;
+//     case 2:
+//       printf("\nList 1: ");
+//       printList(start1);
+//       printf("\nList 2: ");
+//       printList(start2);
+//       printf("\nIntersection: ");
+//       printList(intersection(start1, start2));
+//       break;
+//     case 3:
+//       printf("\nList 1: ");
+//       printList(start1);
+//       printf("\nList 2: ");
+//       printList(start2);
+//       printf("\nSubtraction (L1-L2): ");
+//       printList(difference(start1, start2));
+//       break;
+//     case 4:
+//       printf("\nList 1: ");
+//       printList(start1);
+//       printf("\nList 2: ");
+//       printList(start2);
+//       printf("\nSubtraction (L2-L1): ");
+//       printList(difference(start2, start1));
+//       break;
+//     case 5:
+//       exit(0);
+//       break;
+//     default:
+//       printf("Invalid choice");
+//       break;
+//     }
+//   } while (choice != 5);

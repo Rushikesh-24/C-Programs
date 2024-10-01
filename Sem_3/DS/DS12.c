@@ -105,6 +105,7 @@ void postorderTraversalNonRecursive(struct Node *root) {
     }
   } while (top != -1);
 }
+
 void levelOrderTraversal(struct Node *root) {
   if (root == NULL) {
     return;

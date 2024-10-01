@@ -69,8 +69,6 @@ void dequeue() {
 }
 
 int main() {
-    enqueue(74);enqueue(27);enqueue(64);enqueue(20);
-    dequeue();dequeue();dequeue();enqueue(41);enqueue(109);
-    enqueue(84);dequeue();enqueue(102);dequeue();dequeue();dequeue();
+    enqueue(1);enqueue(1);enqueue(1);enqueue(1);enqueue(1);
     return 0;
 }

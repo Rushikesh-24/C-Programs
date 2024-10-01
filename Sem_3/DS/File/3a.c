@@ -26,7 +26,7 @@ void displaySteps() {
 
 void insert(int item) {
     if(isFull()){
-        printf("\nStack Overflow\n");
+        printf("\nQueue Overflow\n");
         return;
     }
     if (front == -1) front = 0;
@@ -36,7 +36,7 @@ void insert(int item) {
 
 void delete() {
     if(isEmpty()){
-        printf("Stack Underflow\n");
+        printf("Queue Underflow\n");
         return;
     }
     printf("Dequeued element : %d\n", array[front++]);
@@ -44,7 +44,7 @@ void delete() {
 }
 int peek(){
     if(isEmpty()){
-        printf("Stack Underflow\n");
+        printf("Queue Underflow\n");
         exit(1);
     }
     return array[front];
