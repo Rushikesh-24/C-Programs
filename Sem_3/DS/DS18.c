@@ -188,6 +188,7 @@ void radixSort(int arr[], int n) {
     displayArray(arr, n);
   }
 }
+
 void restoreDown(int arr[], int i, int size) {
   int left = 2 * i + 1, right = left + 1;
   int num = arr[i];
@@ -217,6 +218,7 @@ void restoreDown(int arr[], int i, int size) {
   }
   arr[i] = num;
 }
+
 int del_root(int arr[], int *size) {
   int max = arr[0];
   arr[0] = arr[*size - 1];
@@ -298,54 +300,67 @@ int main() {
   printf("\n");
 
   // Bubble Sort
+  for(int i=0;i<100;i++)
+    printf("_");
   for (i = 0; i < n; i++)
     arr[i] = originalArr[i];
-  printf("Bubble Sort:\n");
+  printf("\nBubble Sort:\n");
   bubbleSort(arr, n);
   printf("\n");
 
   // Insertion Sort
+  for(int i=0;i<100;i++)
+    printf("_");
   for (i = 0; i < n; i++)
     arr[i] = originalArr[i];
-  printf("Insertion Sort:\n");
+  printf("\nInsertion Sort:\n");
   insertionSort(arr, n);
   printf("\n");
 
   // Merge Sort
+  for(int i=0;i<100;i++)
+    printf("_");
   for (i = 0; i < n; i++)
     arr[i] = originalArr[i];
-  printf("Merge Sort:\n");
+  printf("\nMerge Sort:\n");
   mergeSort(arr, 0, n - 1);
   printf("\n");
 
   // Selection Sort
+  for(int i=0;i<100;i++)
+    printf("_");
   for (i = 0; i < n; i++)
     arr[i] = originalArr[i];
-  printf("Selection Sort:\n");
+  printf("\nSelection Sort:\n");
   selectionSort(arr, n);
   printf("\n");
 
   // Shell Sort
+  for(int i=0;i<100;i++)
+    printf("_");
   for (i = 0; i < n; i++)
     arr[i] = originalArr[i];
-  printf("Shell Sort:\n");
+  printf("\nShell Sort:\n");
   shellSort(arr, n);
   printf("\n");
 
   // Radix Sort
+  for(int i=0;i<100;i++)
+    printf("_");
   for (i = 0; i < n; i++)
     arr[i] = originalArr[i];
-  printf("Radix Sort:\n");
+  printf("\nRadix Sort:\n");
   radixSort(arr, n);
   printf("\n");
 
 
     // Heap Sort
+    for(int i=0;i<100;i++)
+      printf("_");
     for(i = 0; i < n; i++)
         arr[i] = originalArr[i];
-    printf("Heap Sort:\n");
+    printf("\nHeap Sort:\n");
     heap_sort(arr, n);
-    displayArray(arr, n);
     printf("\n");
   return 0;
 }
