@@ -25,6 +25,7 @@ struct node *createList(struct node *last){
     int data,n;
     printf("Enter the number of nodes: ");
     scanf("%d",&n);
+    if(n<1) return last;
     printf("Element 1: ");
     scanf("%d",&data);
     last=addToEmpty(data,last);
@@ -36,6 +37,7 @@ struct node *createList(struct node *last){
     return last;
 }
 void display(struct node *last){
+    if(last==NULL)return;
     struct node *p=last->link;
     printf("\n");
     do{

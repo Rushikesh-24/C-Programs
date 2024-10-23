@@ -74,7 +74,7 @@ int main() {
   char string[100];
   printf("Enter the string of Parenthesis\n");
   scanf("%s", string);
-  if (check(string))
+  if (check(string) && strlen(string) % 2 == 0)
     printf("Balanced Parenthesis\n");
   else
     printf("Not Balanced Parenthesis\n");
