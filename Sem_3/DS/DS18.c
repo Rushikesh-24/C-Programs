@@ -4,21 +4,30 @@
 void displayArray(int arr[], int n) {
   printf("\n ");
   for (int k = 0; k < n; k++) {
-    printf("_____");
+    printf("______");
   }
   printf("\n|");
   for (int k = 0; k < n; k++) {
-    printf("%03d |", arr[k]);
+    printf("     |");
+  }
+
+  printf("\n|");
+  for (int k = 0; k < n; k++) {
+    printf(" %03d |", arr[k]);
+  }
+  printf("\n|");
+  for (int k = 0; k < n; k++) {
+    printf("     |");
   }
   printf("\n ");
   for (int k = 0; k < n; k++) {
-    printf("⎺⎺⎺⎺⎺");
+    printf("⎺⎺⎺⎺⎺⎺");
   }
   printf("\n");
   for (int k = 0; k < n; k++) {
-    printf(" [%d] ", k);
+    printf("  [%d] ", k);
   }
-  printf("\n");
+  printf("\n\n");
 }
 
 void bubbleSort(int arr[], int n) {
@@ -38,9 +47,6 @@ void bubbleSort(int arr[], int n) {
     if (xchanges == 0)
       break;
   }
-  printf("Sorted list is: \n");
-  for (i = 0; i < n; i++)
-    printf("%d ", arr[i]);
   printf("\n");
 }
 
@@ -124,10 +130,6 @@ void selectionSort(int arr[], int n) {
     }
     printf("After selecting element %d: \n", i);
     displayArray(arr, n);
-  }
-  printf("Sorted list is: \n");
-  for (i = 0; i < n; i++) {
-    printf("%d ", arr[i]);
   }
   printf("\n");
 }
@@ -233,22 +235,21 @@ void buildHeap(int arr[], int size) {
   for (i = size / 2 - 1; i >= 0; i--)
 
     restoreDown(arr, i, size);
-
 }
 
 void heap_sort(int arr[], int size) {
-    int max;
-    buildHeap(arr, size);
-    printf("After building heap: \n");
-    displayArray(arr, size);
-    int n =size;
-    while (size > 0) {
-        max = del_root(arr, &size);
-        arr[size] = max;
-        printf("After removing root and placing at position %d: \n", size);
-        displayArray(arr, n);
-        printf("\n");
-    }
+  int max;
+  buildHeap(arr, size);
+  printf("After building heap: \n");
+  displayArray(arr, size);
+  int n = size;
+  while (size > 0) {
+    max = del_root(arr, &size);
+    arr[size] = max;
+    printf("After removing root and placing at position %d: \n", size);
+    displayArray(arr, n);
+    printf("\n");
+  }
 }
 
 void countSortChars(char arr[], int n, int exp) {
@@ -283,6 +284,19 @@ void radixSortChars(char arr[], int n) {
   }
 }
 
+void copyArray(int dest[], int src[], int n) {
+  for (int i = 0; i < n; i++) {
+    dest[i] = src[i];
+  }
+}
+
+void printSeparator() {
+  for (int i = 0; i < 100; i++) {
+    printf("_");
+  }
+  printf("\n");
+}
+
 int main() {
   int n, i;
   printf("Enter number of elements: ");
@@ -300,67 +314,54 @@ int main() {
   printf("\n");
 
   // Bubble Sort
-  for(int i=0;i<100;i++)
-    printf("_");
-  for (i = 0; i < n; i++)
-    arr[i] = originalArr[i];
+  printSeparator();
+  copyArray(arr, originalArr, n);
   printf("\nBubble Sort:\n");
   bubbleSort(arr, n);
   printf("\n");
 
   // Insertion Sort
-  for(int i=0;i<100;i++)
-    printf("_");
-  for (i = 0; i < n; i++)
-    arr[i] = originalArr[i];
+  printSeparator();
+  copyArray(arr, originalArr, n);
   printf("\nInsertion Sort:\n");
   insertionSort(arr, n);
   printf("\n");
 
   // Merge Sort
-  for(int i=0;i<100;i++)
-    printf("_");
-  for (i = 0; i < n; i++)
-    arr[i] = originalArr[i];
+  printSeparator();
+  copyArray(arr, originalArr, n);
   printf("\nMerge Sort:\n");
   mergeSort(arr, 0, n - 1);
   printf("\n");
 
   // Selection Sort
-  for(int i=0;i<100;i++)
-    printf("_");
-  for (i = 0; i < n; i++)
-    arr[i] = originalArr[i];
+  printSeparator();
+  copyArray(arr, originalArr, n);
   printf("\nSelection Sort:\n");
   selectionSort(arr, n);
   printf("\n");
 
   // Shell Sort
-  for(int i=0;i<100;i++)
-    printf("_");
-  for (i = 0; i < n; i++)
-    arr[i] = originalArr[i];
+  printSeparator();
+  copyArray(arr, originalArr, n);
   printf("\nShell Sort:\n");
   shellSort(arr, n);
   printf("\n");
 
   // Radix Sort
-  for(int i=0;i<100;i++)
-    printf("_");
-  for (i = 0; i < n; i++)
-    arr[i] = originalArr[i];
+  printSeparator();
+  copyArray(arr, originalArr, n);
   printf("\nRadix Sort:\n");
   radixSort(arr, n);
   printf("\n");
 
-
-    // Heap Sort
-    for(int i=0;i<100;i++)
-      printf("_");
-    for(i = 0; i < n; i++)
-        arr[i] = originalArr[i];
-    printf("\nHeap Sort:\n");
-    heap_sort(arr, n);
-    printf("\n");
+  // Heap Sort
+  for (int i = 0; i < 100; i++)
+    printf("_");
+  for (i = 0; i < n; i++)
+    arr[i] = originalArr[i];
+  printf("\nHeap Sort:\n");
+  heap_sort(arr, n);
+  printf("\n");
   return 0;
 }
