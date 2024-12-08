@@ -36,7 +36,7 @@ void bubbleSort(int arr[], int n) {
     xchanges = 0;
     printf("Pass %d: \n", i + 1);
     for (j = 0; j < n - i - 1; j++) {
-      if (arr[j] > arr[j + 1]) {
+      if (arr[j] < arr[j + 1]) {
         temp = arr[j];
         arr[j] = arr[j + 1];
         arr[j + 1] = temp;
@@ -304,9 +304,10 @@ int main() {
   int arr[n];
   int originalArr[n];
 
-  srand(time(0));
+  // srand(time(0));
   for (i = 0; i < n; i++) {
-    originalArr[i] = rand() % 100;
+    scanf("%d",&originalArr[i]);
+    // originalArr[i] = rand() % 100;
   }
 
   printf("Unsorted array: ");

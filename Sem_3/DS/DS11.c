@@ -28,7 +28,7 @@ void preorder(struct TreeNode *root) {
   if (root == NULL) {
     return;
   }
-  printf("%d ", root->data);
+  printf("%c ", root->data);
   preorder(root->lchild);
   preorder(root->rchild);
 }
@@ -38,7 +38,7 @@ void inorder(struct TreeNode *root) {
     return;
   }
   inorder(root->lchild);
-  printf("%d ", root->data);
+  printf("%c ", root->data);
   inorder(root->rchild);
 }
 
@@ -48,10 +48,10 @@ void postorder(struct TreeNode *root) {
   }
   postorder(root->lchild);
   postorder(root->rchild);
-  printf("%d ", root->data);
+  printf("%c ", root->data);
 }
 
-struct listNode *convertToLinkedList(int *array, int size) {
+struct listNode *convertToLinkedList(char *array, int size) {
   if (array == NULL || size == 0) {
     return NULL;
   }
@@ -188,53 +188,6 @@ int getHeightNonRecursive(struct TreeNode *root) {
 
   return height;
 }
-void levelOrderArray(struct TreeNode *root) {
-  if (root == NULL) {
-    printf("Empty root\n");
-    return;
-  }
-
-  insert_queue(root);
-  int i = 1;
-  int level = 1;
-  int nodes_in_level = 1;
-  int printed_in_level = 0;
-
-  while (front <= rear && i <= 15) {
-    struct TreeNode *current = delete_queue();
-    if (current != NULL) {
-      for(int i = 0; i < getHeight(current); i++) {
-        printf("   ");
-      }
-      printf("%2c ", current->data);
-      insert_queue(current->lchild);
-      insert_queue(current->rchild);
-    } else {
-      printf("   ");
-      insert_queue(NULL);
-      insert_queue(NULL);
-    }
-
-    i++;
-    printed_in_level++;
-
-    if (printed_in_level == nodes_in_level && getHeight(current)>1) {
-      printf("\n");
-      for(int i = 0; i < getHeight(current); i++) {
-        printf("   ");
-      }
-      for(int i = 0; i < nodes_in_level; i++) {
-        printf("/  \\   ");
-      }
-      printf("\n");
-      printf("\n");
-      level++;
-      nodes_in_level = pow(2, level - 1);
-      printed_in_level = 0;
-    }
-  }
-  printf("\n");
-}
 
 struct TreeNode *constructPost(struct listNode *postptr, struct listNode *inptr, int num) {
   if (num == 0 || postptr == NULL || inptr == NULL) {
@@ -295,21 +248,37 @@ void displayBinaryTree(struct TreeNode *root) {
     printf("\n");
 }
 
-
-
 int main() {
+  // char preorder[] = {'A', 'R', 'E', 'W', 'F','T','O','X','U'};
+  // char inorder[] = {'E', 'R', 'F', 'W', 'A','O','T','U','X'};
+  // char postorder[] = {'E', 'F', 'W', 'R', 'O', 'U', 'X', 'T', 'A'};
+  int size;
+  printf("Enter the number of elements: ");
+  scanf("%d", &size);
 
-  int preorder[] = {'A', 'R', 'E', 'W', 'F','T','O','X','U'};
-  int inorder[] = {'E', 'R', 'F', 'W', 'A','O','T','U','X'};
-  int postorder[] = {'E', 'F', 'W', 'R', 'O', 'U', 'X', 'T', 'A'};
+  char preorder[size], inorder[size], postorder[size];
+  printf("Enter %d elements for preorder traversal \n", size);
+  for (int i = 0; i < size; i++) {
+    printf("Enter %d element :",i+1);
+    scanf(" %c", &preorder[i]);
+  }
+
+  printf("Enter %d elements for inorder traversal \n", size);
+  for (int i = 0; i < size; i++) {
+    printf("Enter %d element :",i+1);
+    scanf(" %c", &inorder[i]);
+  }
+
+  printf("Enter %d elements for postorder traversal \n", size);
+  for (int i = 0; i < size; i++) {
+    printf("Enter %d element :",i+1);
+    scanf(" %c", &postorder[i]);
+  }
   struct listNode *preptr = convertToLinkedList(preorder, 9);
   struct listNode *inptr = convertToLinkedList(inorder, 9);
   struct listNode *postptr = convertToLinkedList(postorder,9);
   struct TreeNode *tree = construct(preptr, inptr, 9);
   struct TreeNode *root = constructPost(postptr, inptr, 9);
-  displayBinaryTree(root);
-  levelOrderArray(root);
   displayBinaryTree(tree);
-  levelOrderArray(tree);
   return 0;
 }
