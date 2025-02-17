@@ -100,7 +100,7 @@ struct TreeNode *construct(struct listNode *postptr, struct listNode *inptr,int 
   }
 
   tmp->rchild = construct(postptrRight, q->link, num - i - 1);
-
+  
   return tmp;
 }
 

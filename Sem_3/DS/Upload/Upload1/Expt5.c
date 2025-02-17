@@ -9,6 +9,7 @@ char stack[MAX];
 long int lstack[MAX];
 float fstack[MAX];
 int top= -1;
+
 int IsFull(){
     return top==MAX-1;
 }
@@ -48,6 +49,7 @@ void PreDisplay(char symbol,char postfix[],int k){
 int WhiteSpace(char symbol){
     return symbol==' ' || symbol=='\t';
 }
+
 int InstackPriority(char ch){
     switch(ch){
         case '^':

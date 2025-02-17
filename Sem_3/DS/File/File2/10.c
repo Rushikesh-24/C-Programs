@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #define MAX 100
 
 void createGraph(int adjMatrix[MAX][MAX], int vertices) {
