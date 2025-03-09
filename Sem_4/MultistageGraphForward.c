@@ -6,6 +6,7 @@
 int numVertices, numStages;
 double costMatrix[MAX_VERTICES][MAX_VERTICES], minCost[MAX_VERTICES];
 int nextVertex[MAX_VERTICES], path[MAX_VERTICES];
+int vertexStage[MAX_VERTICES];  // Array to store stage of each vertex
 
 struct Edge {
     int start, end, weight;
@@ -24,9 +25,35 @@ struct Edge edges[] = {
     {10,14,8},{11,14,9},{12,14,8},{13,14,7}
 };
 
+void calculateStages() {
+    // Initialize all stages
+    for(int i = 1; i <= numVertices; i++) {
+        vertexStage[i] = numStages;  // Start all vertices at last stage
+    }
+    
+    // First vertex is always stage 1
+    vertexStage[1] = 1;
+    
+    // Calculate stages working backwards
+    int changed;
+    do {
+        changed = 0;
+        for(int i = 0; i < 32; i++) {
+            int start = edges[i].start;
+            int end = edges[i].end;
+            
+            // If end vertex's stage is greater than start vertex's stage + 1
+            if(vertexStage[end] > vertexStage[start] + 1) {
+                vertexStage[end] = vertexStage[start] + 1;
+                changed = 1;
+            }
+        }
+    } while(changed);
+}
+
 void findShortestPath() {
     minCost[numVertices] = 0.0;
-    printf("Cost(%d) = %.2f\n", numVertices, minCost[numVertices]);
+    printf("Cost(%d,%d) = %.2f\n", numVertices, vertexStage[numVertices], minCost[numVertices]);
     
     for (int j = numVertices - 1; j >= 1; j--) {
         minCost[j] = INF;
@@ -38,7 +65,8 @@ void findShortestPath() {
             }
         }
         if (minCost[j] < INF) {
-            printf("Cost(%d) = %.2f  d(%d) = %2d\n", j, minCost[j],j,nextVertex[j]);
+            printf("Cost(%d,%d) = %.2f  d(%d,%d) = %2d\n", 
+                   j, vertexStage[j], minCost[j], j, vertexStage[j], nextVertex[j]);
         }
     }
 
@@ -52,9 +80,10 @@ void findShortestPath() {
 void displayPath() {
     printf("Shortest Path: ");
     for (int i = 1; i <= numStages; i++) {
-        printf("%d ", path[i]);
+        printf("%d ->", path[i]);
     }
     printf("\n");
+    printf("Final cost: %.2f\n", minCost[1]);
 }
 
 int main() {
@@ -71,6 +100,7 @@ int main() {
         costMatrix[edges[i].start][edges[i].end] = edges[i].weight;
     }
     
+    calculateStages();  // Calculate stages before finding shortest path
     findShortestPath();
     displayPath();
     
